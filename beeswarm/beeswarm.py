@@ -167,7 +167,7 @@ def unsplit(x,f):
     y = pandas.DataFrame({"y":[None]*len(f)})
     f = pandas.Series(f)
     for item in set(f):
-        y.ix[f==item,"y"] = x[item]
+        y.loc[f==item,"y"] = x[item]
     return y["y"]
 
 def grid(x, ylim, xsize=0, ysize=0, method="hex", colors="black"):
@@ -208,7 +208,7 @@ def swarm(x, xsize=0, ysize=0, colors="black"):
     gsize = xsize
     dsize = ysize
     out = pandas.DataFrame({"x": [item*1.0/dsize for item in x], "y": [0]*len(x), "color": colors, "order": range(len(x))})
-    out.sort_index(by='x', inplace=True)
+    out.sort_index(inplace=True)
     if out.shape[0] > 1:
         for i in range(1, out.shape[0]):
             xi = out["x"].values[i]
@@ -230,9 +230,9 @@ def swarm(x, xsize=0, ysize=0, colors="black"):
                 out.loc[i,"y"] = newoffset
             else:
                 out.loc[i,"y"] = 0
-    out.ix[numpy.isnan(out["x"]), "y"] = numpy.nan
+    out.loc[numpy.isnan(out["x"]), "y"] = numpy.nan
     # Sort to maintain original order
-    out.sort_index(by="order", inplace=True)
+    out.sort_index(inplace=True)
     return out["y"]*gsize, out["color"]
 
 def _beeswarm(positions, values, xsize=0, ysize=0, ylim=None, method="swarm", colors="black"):
