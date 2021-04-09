@@ -30,7 +30,7 @@ import pandas
 import sys
 
 def beeswarm(values, positions=None, method="swarm",
-             ax=None, s=20, col="black", xlim=None, ylim=None,
+             ax=None, s=20, xspacing=0, yspacing=0, col="black", xlim=None, ylim=None,
              labels=None, labelrotation="vertical", **kwargs):
     """
     beeswarm(values, positions=None, method="swarm",
@@ -48,7 +48,7 @@ def beeswarm(values, positions=None, method="swarm",
             Default: swarm
          * ax: use this axis for plotting. If none supplied, make a new one
             Default: None
-         * s: size of points in points^2 (assuming 72 points/inch).
+         * s: size of points in points^2 (assuming 100 points/inch).
             Defautt: 20
          * col: color of points. Can be:
             - a single string: color all points that color
@@ -140,8 +140,8 @@ def beeswarm(values, positions=None, method="swarm",
     h = (ax.get_position().ymax-ax.get_position().ymin)*figh
     xran = ax.get_xlim()[1]-ax.get_xlim()[0]
     yran = ax.get_ylim()[1]-ax.get_ylim()[0]
-    xsize=math.sqrt(s)*1.0/72*xran*1.0/(w*0.8)
-    ysize=math.sqrt(s)*1.0/72*yran*1.0/(h*0.8)
+    xsize=xspacing*1.0/100*xran*1.0/(w*0.8)
+    ysize=yspacing*1.0/100*yran*1.0/(h*0.8)
 
     # Get new arrangements
     if method == "swarm":
@@ -149,7 +149,7 @@ def beeswarm(values, positions=None, method="swarm",
     else:
         bs = _beeswarm(positions, values, ylim=ax.get_ylim(), xsize=xsize, ysize=ysize, method=method, colors=colors)
     # plot
-    ax.scatter(bs["xnew"], bs["ynew"], c=list(bs["color"]), **kwargs)
+    ax.scatter(bs["xnew"], bs["ynew"], c=list(bs["color"]), s=s, **kwargs)
     ax.set_xticks(positions)
     if labels is not None:
         ax.set_xticklabels(labels, rotation=labelrotation)
